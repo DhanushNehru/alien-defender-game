@@ -1,23 +1,102 @@
 /* Basic CSS styles for the canvas and game elements */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #000;
-  color: #fff;
-  text-align: center;
+  font-family: "Arial", sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.light-mode {
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
+.game-container {
+  max-width: 800px;
+  width: 100%;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+#modeToggle {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+body.dark-mode #modeToggle {
+  color: #ffffff;
+}
+
+body.light-mode #modeToggle {
+  color: #000000;
+}
+
+#modeToggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 canvas {
   display: block;
   margin: 0 auto;
-  border: 3px solid #fff;
+  border: 3px solid;
+  border-radius: 10px;
+  transition: border-color 0.3s;
+}
+
+body.dark-mode canvas {
+  border-color: #ffffff;
+}
+
+body.light-mode canvas {
+  border-color: #000000;
 }
 
 #scoreboard {
   margin-top: 20px;
-  font-size: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 #instruction {
   margin-top: 10px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+@media (max-width: 850px) {
+  .game-container {
+    padding: 0 20px;
+  }
+
+  canvas {
+    width: 100%;
+    height: auto;
+  }
 }
