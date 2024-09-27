@@ -100,3 +100,31 @@ body.light-mode canvas {
     height: auto;
   }
 }
+
+#muteButton {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+  margin-left: 10px; /* To space it out from other elements like mode toggle */
+}
+
+body.dark-mode #muteButton {
+  color: #ffffff;
+}
+
+body.light-mode #muteButton {
+  color: #000000;
+}
+
+#muteButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Style for the icon when muted/unmuted */
+#muteButton i {
+  transition: color 0.3s;
+}

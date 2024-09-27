@@ -25,6 +25,59 @@ ballImage.src = "images/meteor.png";
 
 var isDarkMode = true; // Default to dark mode
 
+window.onload = function () {
+  canvas = document.getElementById("gameCanvas");
+  canvasContext = canvas.getContext("2d");
+
+  var framesPerSecond = 30;
+  setInterval(function () {
+    moveEverything();
+    drawEverything();
+  }, 1000 / framesPerSecond);
+
+  // Load background sound
+  var backgroundSound = document.getElementById("backgroundSound");
+
+  // Event listener to start the game and the sound when the user clicks the canvas
+  canvas.addEventListener("mousedown", function (evt) {
+    handleMouseClick(evt);
+
+    // Play background sound after user interaction
+    if (backgroundSound.paused) {
+      backgroundSound.play().catch(function (error) {
+        console.log("Error playing sound: ", error);
+      });
+    }
+  });
+
+  canvas.addEventListener("mousemove", function (evt) {
+    var mousePos = calculateMousePos(evt);
+    paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
+  });
+
+  // Toggle Dark/Light Mode
+  document.getElementById("modeToggle").addEventListener("click", toggleDarkMode);
+
+  // Mute/unmute sound
+  document.getElementById("muteButton").addEventListener("click", function () {
+    var icon = document.querySelector("#muteButton i");
+
+    if (backgroundSound.muted) {
+      backgroundSound.muted = false;
+      icon.classList.remove("fa-volume-mute");
+      icon.classList.add("fa-volume-up");
+    } else {
+      backgroundSound.muted = true;
+      icon.classList.remove("fa-volume-up");
+      icon.classList.add("fa-volume-mute");
+    }
+  });
+
+  // Set initial mode
+  document.body.classList.add("dark-mode");
+  document.querySelector("#modeToggle i").classList.add("fa-moon");
+};
+
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
@@ -61,33 +114,6 @@ function toggleDarkMode() {
 
   drawEverything(); // Redraw the canvas with new color scheme
 }
-
-window.onload = function () {
-  canvas = document.getElementById("gameCanvas");
-  canvasContext = canvas.getContext("2d");
-
-  var framesPerSecond = 30;
-  setInterval(function () {
-    moveEverything();
-    drawEverything();
-  }, 1000 / framesPerSecond);
-
-  canvas.addEventListener("mousedown", handleMouseClick);
-
-  canvas.addEventListener("mousemove", function (evt) {
-    var mousePos = calculateMousePos(evt);
-    paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
-  });
-
-  document
-    .getElementById("modeToggle")
-    .addEventListener("click", toggleDarkMode);
-
-  // Set initial mode
-  document.body.classList.add("dark-mode");
-  // Ensure the correct initial icon is displayed
-  document.querySelector("#modeToggle i").classList.add("fa-moon");
-};
 
 function ballReset() {
   if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
@@ -183,9 +209,4 @@ function drawEverything() {
     PADDLE_HEIGHT
   );
   canvasContext.drawImage(ballImage, ballX - 10, ballY - 10, 20, 20);
-}
-
-function colorRect(leftX, topY, width, height, drawColor) {
-  canvasContext.fillStyle = drawColor;
-  canvasContext.fillRect(leftX, topY, width, height);
 }
