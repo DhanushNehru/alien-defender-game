@@ -18,6 +18,9 @@
         <button id="modeToggle" aria-label="Toggle dark/light mode">
           <i class="fas fa-moon"></i>
         </button>
+        <button id="muteButton" aria-label="Mute/Unmute Sound">
+          <i class="fas fa-volume-up"></i>
+        </button>
       </header>
       <canvas id="gameCanvas" width="800" height="600"></canvas>
       <div id="scoreboard">
@@ -29,6 +32,10 @@
         the ground!
       </div>
     </div>
+
+    <!-- Background sound -->
+    <audio id="backgroundSound" src="sound/sound.mp3" loop></audio>
+
     <script src="game.js"></script>
   </body>
 </html>
