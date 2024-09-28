@@ -14,6 +14,12 @@ If you believe you have discovered a security vulnerability in the Alien Defende
 
 3. **Follow Up**: We will acknowledge your report within 72 hours. Our team will then assess the vulnerability and provide a timeline for resolution.
 
+## Community Discussions
+
+For community discussions and additional resources related to security, please visit our:
+- [Community page](https://x.com/i/communities/1839675651198210557)
+- [Discord channel](https://discord.com/channels/1222133346302300230/@home)
+
 ## Security Practices
 
 We are committed to maintaining a secure environment for our users and contributors. Here are some of the practices we follow:
