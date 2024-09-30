@@ -128,3 +128,45 @@ body.light-mode #muteButton {
 #muteButton i {
   transition: color 0.3s;
 }
+
+#numberOfRounds {
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 1em;
+}
+
+#numberOfRounds {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#numberOfRounds:focus {
+  border-color: #007bff;
+}
+
+
+#startGame {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #28a745; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+#startGame:hover {
+  background-color: #218838;
+}
+
+#startGame:active {
+  background-color: #1e7e34; 
+}
+

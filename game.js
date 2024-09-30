@@ -1,9 +1,11 @@
+
+
 var canvas;
 var canvasContext;
 var ballX = 50;
 var ballY = 50;
-var ballSpeedX = 10;
-var ballSpeedY = 4;
+var ballSpeedX = 10; // Default speed
+var ballSpeedY = 4;  // Default speed
 
 var player1Score = 0;
 var player2Score = 0;
@@ -25,9 +27,89 @@ ballImage.src = "images/meteor.png";
 
 var isDarkMode = true; // Default to dark mode
 
+
+
+// Get the number of rounds from the HTML input
+var numberOfRounds = parseInt(document.getElementById('numberOfRounds').value) || WINNING_SCORE;
+var currentRound = 1;
+
+// Function to check if the game should end
+function shouldEndGame() {
+    return currentRound > numberOfRounds;
+}
+function handleGameEnd() {
+    if (shouldEndGame()) {
+        showingWinScreen = true;
+        if (player1Score > player2Score) {
+            canvasContext.fillText("Earth Wins!", 350, 200);
+        } else if (player2Score > player1Score) {
+            canvasContext.fillText("Aliens Win!", 350, 200);
+        } else {
+            canvasContext.fillText("It's a Tie!", 350, 200);
+        }
+        canvasContext.fillText("Click to restart", 350, 500);
+    } else {
+        currentRound++;
+        ballReset();
+    }
+}
+
+function moveEverything() {
+    if (showingWinScreen) {
+        return;
+    }
+
+    computerMovement();
+
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+    if (ballX < 0) {
+        if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
+            ballSpeedX = -ballSpeedX;
+        } else {
+            player2Score++;
+            handleGameEnd();
+        }
+    }
+    if (ballX > canvas.width) {
+        if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
+            ballSpeedX = -ballSpeedX;
+        } else {
+            player1Score++; 
+            handleGameEnd();
+        }
+    }
+    if (ballY < 0) {
+        ballSpeedY = -ballSpeedY;
+    }
+    if (ballY > canvas.height) {
+        ballSpeedY = -ballSpeedY;
+    }
+}
+
 window.onload = function () {
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
+
+  document.getElementById("startGame").addEventListener("click", function () {
+    // Get the number of rounds
+    numberOfRounds = parseInt(document.getElementById('numberOfRounds').value);
+
+    if (!isNaN(numberOfRounds) && numberOfRounds > 0) {
+      // Prompt user for ball speed
+      var userSpeedX = prompt("Enter ball speed for X-axis (default is 10):");
+      var userSpeedY = prompt("Enter ball speed for Y-axis (default is 4):");
+
+      // Set ball speed based on user input or default
+      ballSpeedX = userSpeedX ? parseFloat(userSpeedX) : ballSpeedX;
+      ballSpeedY = userSpeedY ? parseFloat(userSpeedY) : ballSpeedY;
+
+      startGameLoop();
+    } else {
+      alert("Please enter a valid number of rounds.");
+    }
+  });
 
   var framesPerSecond = 30;
   setInterval(function () {
@@ -134,47 +216,7 @@ function computerMovement() {
   }
 }
 
-function moveEverything() {
-  if (showingWinScreen) {
-    return;
-  }
 
-  computerMovement();
-
-  ballX = ballX + ballSpeedX;
-  ballY = ballY + ballSpeedY;
-
-  if (ballX < 0) {
-    if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
-      ballSpeedX = -ballSpeedX;
-
-      var deltaY = ballY - (paddle1Y + PADDLE_HEIGHT / 2);
-      ballSpeedY = deltaY * 0.35;
-    } else {
-      player2Score++; // Alien scores
-      document.getElementById("player2Score").innerText = player2Score;
-      ballReset();
-    }
-  }
-  if (ballX > canvas.width) {
-    if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
-      ballSpeedX = -ballSpeedX;
-
-      var deltaY = ballY - (paddle2Y + PADDLE_HEIGHT / 2);
-      ballSpeedY = deltaY * 0.35;
-    } else {
-      player1Score++; // Earth scores
-      document.getElementById("player1Score").innerText = player1Score;
-      ballReset();
-    }
-  }
-  if (ballY < 0) {
-    ballSpeedY = -ballSpeedY;
-  }
-  if (ballY > canvas.height) {
-    ballSpeedY = -ballSpeedY;
-  }
-}
 
 function drawEverything() {
   // Clear the canvas with the appropriate background color
