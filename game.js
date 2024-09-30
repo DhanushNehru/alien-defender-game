@@ -1,3 +1,6 @@
+
+// console.log("speedInX", speedInX);
+// console.log("Speed in y", speedInY);
 var canvas;
 var canvasContext;
 var ballX = 50;
@@ -36,6 +39,16 @@ window.onload = function () {
     drawEverything();
   }, 1000 / framesPerSecond);
 
+  // Getting user input for speed of ball(issue #12)
+  const speedInX = document.getElementById("speedInputInX");
+  const speedInY = document.getElementById("speedInputInY");
+  speedInX.addEventListener('input', () => {
+    ballSpeedX = parseFloat(speedInX.value);  // Update ball speed in X 
+  });
+
+  speedInY.addEventListener('input', () => {
+    ballSpeedY = parseFloat(speedInY.value);  // Update ball speed in Y
+  });
   // Load background sound
   var backgroundSound = document.getElementById("backgroundSound");
 

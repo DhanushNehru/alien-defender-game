@@ -128,3 +128,14 @@ body.light-mode #muteButton {
 #muteButton i {
   transition: color 0.3s;
 }
+
+
+
+#speedInputInX {
+  width: 30px;
+  margin-left: 10px;
+}
+#speedInputInY {
+  width: 30px;
+  margin-left: 10px;
+}
