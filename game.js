@@ -4,6 +4,7 @@ var ballX = 50;
 var ballY = 50;
 var ballSpeedX = 10;
 var ballSpeedY = 4;
+var arrowKeyPressed = {}; // Since no key is pressed initially
 
 var player1Score = 0;
 var player2Score = 0;
@@ -54,6 +55,8 @@ window.onload = function () {
     var mousePos = calculateMousePos(evt);
     paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
   });
+
+
 
   // Toggle Dark/Light Mode
   document.getElementById("modeToggle").addEventListener("click", toggleDarkMode);
@@ -134,12 +137,36 @@ function computerMovement() {
   }
 }
 
+// Eventlistners for issue #4
+window.addEventListener("keydown", function (evt) {
+  arrowKeyPressed[evt.key] = true;
+});
+
+window.addEventListener("keyup", function (evt) {
+  delete arrowKeyPressed[evt.key];
+});
+
+
+
 function moveEverything() {
   if (showingWinScreen) {
     return;
   }
 
+  // Working on Issue #4 Adding buttonMovement Functionality by Shishu-Ranjan( @github.com/yesahem )
+
+  if (arrowKeyPressed["ArrowUp"] && paddle1Y > 0) {
+    paddle1Y -= 10;
+  } else if (arrowKeyPressed["ArrowDown"] && paddle1Y + PADDLE_HEIGHT < canvas.height) {
+    paddle1Y += 10;
+  } else if (paddle1Y < 0) {
+    paddle1Y = 0;
+  } else if (paddle1Y + PADDLE_HEIGHT > canvas.height) {
+    paddle1Y = canvas.height - PADDLE_HEIGHT;
+  }
+
   computerMovement();
+
 
   ballX = ballX + ballSpeedX;
   ballY = ballY + ballSpeedY;
@@ -168,13 +195,23 @@ function moveEverything() {
       ballReset();
     }
   }
-  if (ballY < 0) {
+
+
+  // Merging the following logics in same condional statement
+  if (ballY < 0 || ballY > canvas.height) {
     ballSpeedY = -ballSpeedY;
   }
+  /*
   if (ballY > canvas.height) {
     ballSpeedY = -ballSpeedY;
   }
+  */
 }
+
+
+
+
+
 
 function drawEverything() {
   // Clear the canvas with the appropriate background color
