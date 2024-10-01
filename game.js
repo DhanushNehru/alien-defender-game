@@ -227,18 +227,45 @@ function drawEverything() {
 
   if (showingWinScreen) {
     canvasContext.fillStyle = isDarkMode ? "white" : "black";
-    canvasContext.font = "30px Orbitron";
+    canvasContext.font = "60px Orbitron";
     canvasContext.textAlign = "center";
     canvasContext.textBaseline = "middle";
     
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    
     if (player1Score >= WINNING_SCORE) {
-      canvasContext.fillText("EARTH WINS!", canvasWidth / 2, canvasHeight / 2 - 50);
+      canvasContext.fillText("EARTH WINS!", canvasWidth / 2, canvasHeight / 2 - 100);
     } else if (player2Score >= WINNING_SCORE) {
-      canvasContext.fillText("ALIENS CONQUER!", canvasWidth / 2, canvasHeight / 2 - 50);
+      canvasContext.fillText("ALIENS CONQUER!", canvasWidth / 2, canvasHeight / 2 - 100);
     }
-    canvasContext.fillText("Cick to continue",  canvasWidth / 2, canvasHeight / 2 + 100);
+
+    const buttonWidth = 200;
+    const buttonHeight = 60;
+    const buttonX = canvasWidth / 2 - buttonWidth / 2;
+    const buttonY = canvasHeight / 2 + 50;
+
+    canvasContext.fillStyle = isDarkMode ? "#444" : "#ddd";
+    canvasContext.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+
+    canvasContext.fillStyle = isDarkMode ? "white" : "black";
+    canvasContext.font = "24px Orbitron";
+    canvasContext.fillText("Restart Game", canvasWidth / 2, buttonY + buttonHeight / 2);
+
+    canvas.onclick = function(event) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      if (mouseX > buttonX && mouseX < buttonX + buttonWidth &&
+          mouseY > buttonY && mouseY < buttonY + buttonHeight) {
+        player1Score = 0;
+        player2Score = 0;
+        showingWinScreen = false;
+        canvas.onclick = null;
+      }
+    };
+
     return;
   }
 
