@@ -220,11 +220,6 @@ function moveEverything() {
   */
 }
 
-
-
-
-
-
 function drawEverything() {
   // Clear the canvas with the appropriate background color
   canvasContext.fillStyle = isDarkMode ? "black" : "white";
@@ -232,13 +227,18 @@ function drawEverything() {
 
   if (showingWinScreen) {
     canvasContext.fillStyle = isDarkMode ? "white" : "black";
+    canvasContext.font = "30px Orbitron";
+    canvasContext.textAlign = "center";
+    canvasContext.textBaseline = "middle";
+    
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
     if (player1Score >= WINNING_SCORE) {
-      canvasContext.fillText("Earth Wins!", 350, 200);
+      canvasContext.fillText("EARTH WINS!", canvasWidth / 2, canvasHeight / 2 - 50);
     } else if (player2Score >= WINNING_SCORE) {
-      canvasContext.fillText("Aliens Conquer!", 350, 200);
+      canvasContext.fillText("ALIENS CONQUER!", canvasWidth / 2, canvasHeight / 2 - 50);
     }
-
-    canvasContext.fillText("click to continue", 350, 500);
+    canvasContext.fillText("Cick to continue",  canvasWidth / 2, canvasHeight / 2 + 100);
     return;
   }
 
