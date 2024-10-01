@@ -21,9 +21,11 @@ const PADDLE_HEIGHT = 100;
 var player1Image = new Image();
 var player2Image = new Image();
 var ballImage = new Image();
+var backgroundImage = new Image();
 player1Image.src = "images/spaceship.png";
 player2Image.src = "images/alien.png";
 ballImage.src = "images/meteor.png";
+backgroundImage.src = "images/space-bg.jpg";
 
 var isDarkMode = true; // Default to dark mode
 
@@ -241,6 +243,9 @@ function drawEverything() {
     canvasContext.fillText("click to continue", 350, 500);
     return;
   }
+
+  // Draw background image.
+  canvasContext.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
   // Draw paddles and ball
   canvasContext.drawImage(
