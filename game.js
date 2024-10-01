@@ -1,3 +1,4 @@
+
 var canvas;
 var canvasContext;
 var ballX = 50;
@@ -36,6 +37,16 @@ window.onload = function () {
     drawEverything();
   }, 1000 / framesPerSecond);
 
+  // Getting user input for speed of ball(issue #12)
+  const speedInX = document.getElementById("speedInputInX");
+  const speedInY = document.getElementById("speedInputInY");
+  speedInX.addEventListener('input', () => {
+    ballSpeedX = parseFloat(speedInX.value);  // Update ball speed in X 
+  });
+
+  speedInY.addEventListener('input', () => {
+    ballSpeedY = parseFloat(speedInY.value);  // Update ball speed in Y
+  });
   // Load background sound
   var backgroundSound = document.getElementById("backgroundSound");
 
@@ -171,19 +182,20 @@ function moveEverything() {
   ballX = ballX + ballSpeedX;
   ballY = ballY + ballSpeedY;
 
-  if (ballX < 0) {
+  if (ballX-20 < PADDLE_THICKNESS) {
     if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
       ballSpeedX = -ballSpeedX;
 
       var deltaY = ballY - (paddle1Y + PADDLE_HEIGHT / 2);
       ballSpeedY = deltaY * 0.35;
+
     } else {
       player2Score++; // Alien scores
       document.getElementById("player2Score").innerText = player2Score;
       ballReset();
     }
   }
-  if (ballX > canvas.width) {
+  if (ballX+20 > canvas.width-PADDLE_THICKNESS) {
     if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
       ballSpeedX = -ballSpeedX;
 
