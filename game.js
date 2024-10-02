@@ -313,8 +313,6 @@ function moveEverything() {
 
 
 
-
-
 function drawEverything() {
   // Clear the canvas with the appropriate background color
   canvasContext.fillStyle = isDarkMode ? "black" : "white";
