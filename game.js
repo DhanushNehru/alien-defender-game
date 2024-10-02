@@ -22,9 +22,11 @@ const PADDLE_HEIGHT = 100;
 var player1Image = new Image();
 var player2Image = new Image();
 var ballImage = new Image();
+var backgroundImage = new Image();
 player1Image.src = "images/spaceship.png";
 player2Image.src = "images/alien.png";
 ballImage.src = "images/meteor.png";
+backgroundImage.src = "images/space-bg.jpg";
 
 var isDarkMode = true; // Default to dark mode
 
@@ -311,8 +313,6 @@ function moveEverything() {
 }
 
 
-
-
 function drawEverything() {
   // Clear the canvas with the appropriate background color
   canvasContext.fillStyle = isDarkMode ? "black" : "white";
@@ -320,15 +320,23 @@ function drawEverything() {
 
   if (showingWinScreen) {
     canvasContext.fillStyle = isDarkMode ? "white" : "black";
+    canvasContext.font = "30px Orbitron";
+    canvasContext.textAlign = "center";
+    canvasContext.textBaseline = "middle";
+    
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
     if (player1Score >= WINNING_SCORE) {
-      canvasContext.fillText("Earth Wins!", 350, 200);
+      canvasContext.fillText("EARTH WINS!", canvasWidth / 2, canvasHeight / 2 - 50);
     } else if (player2Score >= WINNING_SCORE) {
-      canvasContext.fillText("Aliens Conquer!", 350, 200);
+      canvasContext.fillText("ALIENS CONQUER!", canvasWidth / 2, canvasHeight / 2 - 50);
     }
-
-    canvasContext.fillText("click to continue", 350, 500);
+    canvasContext.fillText("Cick to continue",  canvasWidth / 2, canvasHeight / 2 + 100);
     return;
   }
+
+  // Draw background image.
+  canvasContext.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
   // Draw paddles and ball
   canvasContext.drawImage(
