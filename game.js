@@ -1,4 +1,5 @@
 
+
 var canvas;
 var canvasContext;
 var ballX = 50;
@@ -29,7 +30,28 @@ backgroundImage.src = "images/space-bg.jpg";
 
 var isDarkMode = true; // Default to dark mode
 
-window.onload = function () {
+// Fixing Issue #21 by Shishu-Ranjan( @github.com/yesahem ) Adding startgame button
+
+const startGame = document.getElementById("startGame")
+const pauseGame = document.getElementById("pauseGame")
+const resetGame = document.getElementById("resetGame")
+
+
+
+startGame.onclick = function () {
+  resetGame.onclick = () => {
+    location.reload();
+  }
+  pauseGame.onclick =  function () {
+    
+    if(pauseGame.innerHTML == "Pause Game"){
+      
+      alert("Game Paused, Click Ok to resume ");
+    }
+    
+    
+    // alert("Game Stopped");
+  }
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
 
@@ -94,6 +116,74 @@ window.onload = function () {
   document.querySelector("#modeToggle i").classList.add("fa-moon");
 };
 
+// Below is the refernce of the function that is being used before if anyone want to understand only the basic functionality of the game Refer here!!
+
+/*
+window.onload = function () {
+  canvas = document.getElementById("gameCanvas");
+  canvasContext = canvas.getContext("2d");
+
+  var framesPerSecond = 30;
+  setInterval(function () {
+    moveEverything();
+    drawEverything();
+  }, 1000 / framesPerSecond);
+
+  // Getting user input for speed of ball(issue #12)
+  const speedInX = document.getElementById("speedInputInX");
+  const speedInY = document.getElementById("speedInputInY");
+  speedInX.addEventListener('input', () => {
+    ballSpeedX = parseFloat(speedInX.value);  // Update ball speed in X 
+  });
+
+  speedInY.addEventListener('input', () => {
+    ballSpeedY = parseFloat(speedInY.value);  // Update ball speed in Y
+  });
+  // Load background sound
+  var backgroundSound = document.getElementById("backgroundSound");
+
+  // Event listener to start the game and the sound when the user clicks the canvas
+  canvas.addEventListener("mousedown", function (evt) {
+    handleMouseClick(evt);
+
+    // Play background sound after user interaction
+    if (backgroundSound.paused) {
+      backgroundSound.play().catch(function (error) {
+        console.log("Error playing sound: ", error);
+      });
+    }
+  });
+
+  canvas.addEventListener("mousemove", function (evt) {
+    var mousePos = calculateMousePos(evt);
+    paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
+  });
+
+
+
+  // Toggle Dark/Light Mode
+  document.getElementById("modeToggle").addEventListener("click", toggleDarkMode);
+
+  // Mute/unmute sound
+  document.getElementById("muteButton").addEventListener("click", function () {
+    var icon = document.querySelector("#muteButton i");
+
+    if (backgroundSound.muted) {
+      backgroundSound.muted = false;
+      icon.classList.remove("fa-volume-mute");
+      icon.classList.add("fa-volume-up");
+    } else {
+      backgroundSound.muted = true;
+      icon.classList.remove("fa-volume-up");
+      icon.classList.add("fa-volume-mute");
+    }
+  });
+
+  // Set initial mode
+  document.body.classList.add("dark-mode");
+  document.querySelector("#modeToggle i").classList.add("fa-moon");
+};
+*/
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
@@ -221,6 +311,7 @@ function moveEverything() {
   }
   */
 }
+
 
 function drawEverything() {
   // Clear the canvas with the appropriate background color
