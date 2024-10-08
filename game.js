@@ -4,9 +4,14 @@ var canvas;
 var canvasContext;
 var ballX = 50;
 var ballY = 50;
+
+var ballSpeedX = 10; // Default speed
+var ballSpeedY = 4;  // Default speed
+
 var ballSpeedX = 10;
 var ballSpeedY = 4;
 var arrowKeyPressed = {}; // Since no key is pressed initially
+
 
 var player1Score = 0;
 var player2Score = 0;
@@ -30,6 +35,70 @@ backgroundImage.src = "images/space-bg.jpg";
 
 var isDarkMode = true; // Default to dark mode
 
+
+
+
+// Get the number of rounds from the HTML input
+var numberOfRounds = parseInt(document.getElementById('numberOfRounds').value) || WINNING_SCORE;
+var currentRound = 1;
+
+// Function to check if the game should end
+function shouldEndGame() {
+    return currentRound > numberOfRounds;
+}
+function handleGameEnd() {
+    if (shouldEndGame()) {
+        showingWinScreen = true;
+        if (player1Score > player2Score) {
+            canvasContext.fillText("Earth Wins!", 350, 200);
+        } else if (player2Score > player1Score) {
+            canvasContext.fillText("Aliens Win!", 350, 200);
+        } else {
+            canvasContext.fillText("It's a Tie!", 350, 200);
+        }
+        canvasContext.fillText("Click to restart", 350, 500);
+    } else {
+        currentRound++;
+        ballReset();
+    }
+}
+
+function moveEverything() {
+    if (showingWinScreen) {
+        return;
+    }
+
+    computerMovement();
+
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+    if (ballX < 0) {
+        if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
+            ballSpeedX = -ballSpeedX;
+        } else {
+            player2Score++;
+            handleGameEnd();
+        }
+    }
+    if (ballX > canvas.width) {
+        if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
+            ballSpeedX = -ballSpeedX;
+        } else {
+            player1Score++; 
+            handleGameEnd();
+        }
+    }
+    if (ballY < 0) {
+        ballSpeedY = -ballSpeedY;
+    }
+    if (ballY > canvas.height) {
+        ballSpeedY = -ballSpeedY;
+    }
+}
+
+window.onload = function () {
+
 // Fixing Issue #21 by Shishu-Ranjan( @github.com/yesahem ) Adding startgame button
 
 const startGame = document.getElementById("startGame")
@@ -52,8 +121,28 @@ startGame.onclick = function () {
     
     // alert("Game Stopped");
   }
+
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
+
+  document.getElementById("startGame").addEventListener("click", function () {
+    // Get the number of rounds
+    numberOfRounds = parseInt(document.getElementById('numberOfRounds').value);
+
+    if (!isNaN(numberOfRounds) && numberOfRounds > 0) {
+      // Prompt user for ball speed
+      var userSpeedX = prompt("Enter ball speed for X-axis (default is 10):");
+      var userSpeedY = prompt("Enter ball speed for Y-axis (default is 4):");
+
+      // Set ball speed based on user input or default
+      ballSpeedX = userSpeedX ? parseFloat(userSpeedX) : ballSpeedX;
+      ballSpeedY = userSpeedY ? parseFloat(userSpeedY) : ballSpeedY;
+
+      startGameLoop();
+    } else {
+      alert("Please enter a valid number of rounds.");
+    }
+  });
 
   var framesPerSecond = 30;
   setInterval(function () {
@@ -240,6 +329,9 @@ function computerMovement() {
   }
 }
 
+
+
+
 // Eventlistners for issue #4
 window.addEventListener("keydown", function (evt) {
   arrowKeyPressed[evt.key] = true;
@@ -311,6 +403,7 @@ function moveEverything() {
   }
   */
 }
+
 
 
 function drawEverything() {
