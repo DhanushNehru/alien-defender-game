@@ -4,8 +4,14 @@ var canvas;
 var canvasContext;
 var ballX = 50;
 var ballY = 50;
+
 var ballSpeedX = 10; // Default speed
 var ballSpeedY = 4;  // Default speed
+
+var ballSpeedX = 10;
+var ballSpeedY = 4;
+var arrowKeyPressed = {}; // Since no key is pressed initially
+
 
 var player1Score = 0;
 var player2Score = 0;
@@ -21,11 +27,14 @@ const PADDLE_HEIGHT = 100;
 var player1Image = new Image();
 var player2Image = new Image();
 var ballImage = new Image();
+var backgroundImage = new Image();
 player1Image.src = "images/spaceship.png";
 player2Image.src = "images/alien.png";
 ballImage.src = "images/meteor.png";
+backgroundImage.src = "images/space-bg.jpg";
 
 var isDarkMode = true; // Default to dark mode
+
 
 
 
@@ -89,6 +98,30 @@ function moveEverything() {
 }
 
 window.onload = function () {
+
+// Fixing Issue #21 by Shishu-Ranjan( @github.com/yesahem ) Adding startgame button
+
+const startGame = document.getElementById("startGame")
+const pauseGame = document.getElementById("pauseGame")
+const resetGame = document.getElementById("resetGame")
+
+
+
+startGame.onclick = function () {
+  resetGame.onclick = () => {
+    location.reload();
+  }
+  pauseGame.onclick =  function () {
+    
+    if(pauseGame.innerHTML == "Pause Game"){
+      
+      alert("Game Paused, Click Ok to resume ");
+    }
+    
+    
+    // alert("Game Stopped");
+  }
+
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
 
@@ -117,6 +150,16 @@ window.onload = function () {
     drawEverything();
   }, 1000 / framesPerSecond);
 
+  // Getting user input for speed of ball(issue #12)
+  const speedInX = document.getElementById("speedInputInX");
+  const speedInY = document.getElementById("speedInputInY");
+  speedInX.addEventListener('input', () => {
+    ballSpeedX = parseFloat(speedInX.value);  // Update ball speed in X 
+  });
+
+  speedInY.addEventListener('input', () => {
+    ballSpeedY = parseFloat(speedInY.value);  // Update ball speed in Y
+  });
   // Load background sound
   var backgroundSound = document.getElementById("backgroundSound");
 
@@ -136,6 +179,8 @@ window.onload = function () {
     var mousePos = calculateMousePos(evt);
     paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
   });
+
+
 
   // Toggle Dark/Light Mode
   document.getElementById("modeToggle").addEventListener("click", toggleDarkMode);
@@ -160,6 +205,74 @@ window.onload = function () {
   document.querySelector("#modeToggle i").classList.add("fa-moon");
 };
 
+// Below is the refernce of the function that is being used before if anyone want to understand only the basic functionality of the game Refer here!!
+
+/*
+window.onload = function () {
+  canvas = document.getElementById("gameCanvas");
+  canvasContext = canvas.getContext("2d");
+
+  var framesPerSecond = 30;
+  setInterval(function () {
+    moveEverything();
+    drawEverything();
+  }, 1000 / framesPerSecond);
+
+  // Getting user input for speed of ball(issue #12)
+  const speedInX = document.getElementById("speedInputInX");
+  const speedInY = document.getElementById("speedInputInY");
+  speedInX.addEventListener('input', () => {
+    ballSpeedX = parseFloat(speedInX.value);  // Update ball speed in X 
+  });
+
+  speedInY.addEventListener('input', () => {
+    ballSpeedY = parseFloat(speedInY.value);  // Update ball speed in Y
+  });
+  // Load background sound
+  var backgroundSound = document.getElementById("backgroundSound");
+
+  // Event listener to start the game and the sound when the user clicks the canvas
+  canvas.addEventListener("mousedown", function (evt) {
+    handleMouseClick(evt);
+
+    // Play background sound after user interaction
+    if (backgroundSound.paused) {
+      backgroundSound.play().catch(function (error) {
+        console.log("Error playing sound: ", error);
+      });
+    }
+  });
+
+  canvas.addEventListener("mousemove", function (evt) {
+    var mousePos = calculateMousePos(evt);
+    paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
+  });
+
+
+
+  // Toggle Dark/Light Mode
+  document.getElementById("modeToggle").addEventListener("click", toggleDarkMode);
+
+  // Mute/unmute sound
+  document.getElementById("muteButton").addEventListener("click", function () {
+    var icon = document.querySelector("#muteButton i");
+
+    if (backgroundSound.muted) {
+      backgroundSound.muted = false;
+      icon.classList.remove("fa-volume-mute");
+      icon.classList.add("fa-volume-up");
+    } else {
+      backgroundSound.muted = true;
+      icon.classList.remove("fa-volume-up");
+      icon.classList.add("fa-volume-mute");
+    }
+  });
+
+  // Set initial mode
+  document.body.classList.add("dark-mode");
+  document.querySelector("#modeToggle i").classList.add("fa-moon");
+};
+*/
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
@@ -218,6 +331,81 @@ function computerMovement() {
 
 
 
+
+// Eventlistners for issue #4
+window.addEventListener("keydown", function (evt) {
+  arrowKeyPressed[evt.key] = true;
+});
+
+window.addEventListener("keyup", function (evt) {
+  delete arrowKeyPressed[evt.key];
+});
+
+
+
+function moveEverything() {
+  if (showingWinScreen) {
+    return;
+  }
+
+  // Working on Issue #4 Adding buttonMovement Functionality by Shishu-Ranjan( @github.com/yesahem )
+
+  if (arrowKeyPressed["ArrowUp"] && paddle1Y > 0) {
+    paddle1Y -= 10;
+  } else if (arrowKeyPressed["ArrowDown"] && paddle1Y + PADDLE_HEIGHT < canvas.height) {
+    paddle1Y += 10;
+  } else if (paddle1Y < 0) {
+    paddle1Y = 0;
+  } else if (paddle1Y + PADDLE_HEIGHT > canvas.height) {
+    paddle1Y = canvas.height - PADDLE_HEIGHT;
+  }
+
+  computerMovement();
+
+
+  ballX = ballX + ballSpeedX;
+  ballY = ballY + ballSpeedY;
+
+  if (ballX-20 < PADDLE_THICKNESS) {
+    if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
+      ballSpeedX = -ballSpeedX;
+
+      var deltaY = ballY - (paddle1Y + PADDLE_HEIGHT / 2);
+      ballSpeedY = deltaY * 0.35;
+
+    } else {
+      player2Score++; // Alien scores
+      document.getElementById("player2Score").innerText = player2Score;
+      ballReset();
+    }
+  }
+  if (ballX+20 > canvas.width-PADDLE_THICKNESS) {
+    if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
+      ballSpeedX = -ballSpeedX;
+
+      var deltaY = ballY - (paddle2Y + PADDLE_HEIGHT / 2);
+      ballSpeedY = deltaY * 0.35;
+    } else {
+      player1Score++; // Earth scores
+      document.getElementById("player1Score").innerText = player1Score;
+      ballReset();
+    }
+  }
+
+
+  // Merging the following logics in same condional statement
+  if (ballY < 0 || ballY > canvas.height) {
+    ballSpeedY = -ballSpeedY;
+  }
+  /*
+  if (ballY > canvas.height) {
+    ballSpeedY = -ballSpeedY;
+  }
+  */
+}
+
+
+
 function drawEverything() {
   // Clear the canvas with the appropriate background color
   canvasContext.fillStyle = isDarkMode ? "black" : "white";
@@ -225,15 +413,50 @@ function drawEverything() {
 
   if (showingWinScreen) {
     canvasContext.fillStyle = isDarkMode ? "white" : "black";
+    canvasContext.font = "60px Orbitron";
+    canvasContext.textAlign = "center";
+    canvasContext.textBaseline = "middle";
+    
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    
     if (player1Score >= WINNING_SCORE) {
-      canvasContext.fillText("Earth Wins!", 350, 200);
+      canvasContext.fillText("EARTH WINS!", canvasWidth / 2, canvasHeight / 2 - 100);
     } else if (player2Score >= WINNING_SCORE) {
-      canvasContext.fillText("Aliens Conquer!", 350, 200);
+      canvasContext.fillText("ALIENS CONQUER!", canvasWidth / 2, canvasHeight / 2 - 100);
     }
 
-    canvasContext.fillText("click to continue", 350, 500);
+    const buttonWidth = 200;
+    const buttonHeight = 60;
+    const buttonX = canvasWidth / 2 - buttonWidth / 2;
+    const buttonY = canvasHeight / 2 + 50;
+
+    canvasContext.fillStyle = isDarkMode ? "#444" : "#ddd";
+    canvasContext.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+
+    canvasContext.fillStyle = isDarkMode ? "white" : "black";
+    canvasContext.font = "24px Orbitron";
+    canvasContext.fillText("Restart Game", canvasWidth / 2, buttonY + buttonHeight / 2);
+
+    canvas.onclick = function(event) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      if (mouseX > buttonX && mouseX < buttonX + buttonWidth &&
+          mouseY > buttonY && mouseY < buttonY + buttonHeight) {
+        player1Score = 0;
+        player2Score = 0;
+        showingWinScreen = false;
+        canvas.onclick = null;
+      }
+    };
+
     return;
   }
+
+  // Draw background image.
+  canvasContext.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
   // Draw paddles and ball
   canvasContext.drawImage(

@@ -19,8 +19,9 @@ An Alien Space Themed Browser Game
 
 ### Installation
 
-1. Clone this repository:
-2. cd alien-defender
+1. Clone this repository: <br>
+     ```git clone https://github.com/DhanushNehru/alien-defender-game.git alien-defender```
+3. cd alien-defender
 2. Open the index.html in a browser
 
 ## Gitpod

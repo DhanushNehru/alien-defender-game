@@ -129,6 +129,7 @@ body.light-mode #muteButton {
   transition: color 0.3s;
 }
 
+
 #numberOfRounds {
   margin-bottom: 10px;
   padding: 5px;
@@ -168,5 +169,17 @@ body.light-mode #muteButton {
 
 #startGame:active {
   background-color: #1e7e34; 
+}
+
+
+
+
+#speedInputInX {
+  width: 30px;
+  margin-left: 10px;
+}
+#speedInputInY {
+  width: 30px;
+  margin-left: 10px;
 }
 
