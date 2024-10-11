@@ -1,4 +1,11 @@
-# alien-defender-game
+# Alien Defender Game
+<div align="center">
+  
+[![Join Our Discord](https://img.shields.io/badge/Discord-Join%20Server-blue?logo=discord&style=for-the-badge)](https://discord.com/invite/Yn9g6KuWyA)
+[![Subscribe on YouTube](https://img.shields.io/badge/YouTube-Subscribe-red?logo=youtube&style=for-the-badge)](https://www.youtube.com/@dhanushnehru?sub_confirmation=1)
+[![Subscribe to Newsletter](https://img.shields.io/badge/Newsletter-Subscribe-orange?style=for-the-badge)](https://dhanushn.substack.com/)
+
+</div>
 An Alien Space Themed Browser Game
 
 **Alien Defender** is a fun and engaging browser-based game where players control a spaceship to prevent meteors (aliens) from hitting the ground. The objective is to score points by bouncing the meteors back to space while competing against a computer-controlled alien opponent.
@@ -33,5 +40,3 @@ You can use Gitpod in the cloud  [![Gitpod Ready-to-Code](https://img.shields.io
 ----
 
 Feel free to update the README.md or raise issues if any to enhance the project
-
-### Connect 👉 [**X**](https://x.com/Dhanush_Nehru) **/** [**Instagram**](https://www.instagram.com/dhanush_nehru/) **/** [**Github**](https://github.com/DhanushNehru/) **/** [**Youtube**](https://www.youtube.com/@dhanushnehru?sub_confirmation=1) **/** [**Newsletter**](https://dhanushn.substack.com/) **/** [**Discord**](https://discord.com/invite/Yn9g6KuWyA)
