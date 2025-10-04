@@ -1,7 +1,6 @@
-/* Basic CSS styles for the canvas and game elements */
 body {
   margin: 0;
-  font-family: "Arial", sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   transition: background-color 0.3s, color 0.3s;
   display: flex;
   justify-content: center;
@@ -17,13 +16,18 @@ body.dark-mode {
 }
 
 body.light-mode {
-  background-color: #f0f0f0;
-  color: #000000;
+  background-color: #f5f7fa;
+  color: #1e1e1e;
 }
 
 .game-container {
-  max-width: 800px;
+  max-width: 850px;
   width: 100%;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
 }
 
 header {
@@ -35,64 +39,80 @@ header {
 
 h1 {
   margin: 0;
-  font-size: 2.5em;
+  font-size: 2.2em;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
-#modeToggle {
+#modeToggle,
+#muteButton {
   background: none;
   border: none;
-  font-size: 1.5em;
+  font-size: 1.4em;
   cursor: pointer;
-  padding: 5px;
+  padding: 8px;
   border-radius: 50%;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-body.dark-mode #modeToggle {
+body.dark-mode #modeToggle,
+body.dark-mode #muteButton {
   color: #ffffff;
 }
 
-body.light-mode #modeToggle {
+body.light-mode #modeToggle,
+body.light-mode #muteButton {
   color: #000000;
 }
 
-#modeToggle:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+#modeToggle:hover,
+#muteButton:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
 }
 
 canvas {
   display: block;
   margin: 0 auto;
   border: 3px solid;
-  border-radius: 10px;
-  transition: border-color 0.3s;
+  border-radius: 12px;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 body.dark-mode canvas {
   border-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
 }
 
 body.light-mode canvas {
   border-color: #000000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 #scoreboard {
   margin-top: 20px;
   font-size: 1.2em;
   font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 10px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode #scoreboard {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 #instruction {
-  margin-top: 10px;
+  margin-top: 15px;
   font-style: italic;
-  opacity: 0.8;
+  opacity: 0.85;
+  text-align: center;
 }
 
 @media (max-width: 850px) {
   .game-container {
-    padding: 0 20px;
+    padding: 15px;
   }
 
   canvas {
@@ -101,41 +121,68 @@ body.light-mode canvas {
   }
 }
 
-#muteButton {
-  background: none;
-  border: none;
-  font-size: 1.5em;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50%;
-  transition: background-color 0.3s;
-  margin-left: 10px; /* To space it out from other elements like mode toggle */
-}
 
-body.dark-mode #muteButton {
-  color: #ffffff;
-}
-
-body.light-mode #muteButton {
-  color: #000000;
-}
-
-#muteButton:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Style for the icon when muted/unmuted */
-#muteButton i {
-  transition: color 0.3s;
-}
-
-
-
-#speedInputInX {
-  width: 30px;
-  margin-left: 10px;
-}
+#speedInputInX,
 #speedInputInY {
-  width: 30px;
+  width: 45px;
   margin-left: 10px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+#speedInputInX:focus,
+#speedInputInY:focus {
+  border-color: #4cafef;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 175, 239, 0.6);
+}
+
+#startGame,
+#pauseGame,
+#resetGame {
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+#startGame {
+  background: linear-gradient(135deg, #4caf50, #81c784);
+}
+
+#pauseGame {
+  background: linear-gradient(135deg, #ff9800, #ffb74d);
+}
+
+#resetGame {
+  background: linear-gradient(135deg, #00bcd4, #4dd0e1);
+}
+
+#startGame:hover,
+#pauseGame:hover,
+#resetGame:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+#instruction {
+  margin-top: 20px;
+  padding: 12px 18px;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.1em;
+  text-align: center;
+  border-left: 7px solid #4cafef;
+  border-radius: 8px;
+  background: rgba(76, 175, 239, 0.08);
+  color: #333;
+  line-height: 1.5;
+  transition: background 0.3s, color 0.3s;
+} 
